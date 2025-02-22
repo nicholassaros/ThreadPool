@@ -30,7 +30,7 @@ int main(){
 
     int taskId = 0;
 
-    while(true){
+    //while(true){
         th.TaskQueuePush([taskId]() {
             cout << "Executing task " << taskId << "\n";
             sleep(5);
@@ -38,7 +38,15 @@ int main(){
         });
         taskId++;
         sleep(2);
-    }
+
+        th.TaskQueuePush([taskId]() {
+            cout << "Executing task " << taskId << "\n";
+            sleep(5);
+            cout << "Finished executing task " << taskId << "\n";
+        });
+        taskId++;
+        sleep(2);
+    //}
     return 0;
 
 }

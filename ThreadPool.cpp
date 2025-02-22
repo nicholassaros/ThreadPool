@@ -35,10 +35,12 @@ function<void()> ThreadPool::TaskQueuePop() {
         _conditionVar.wait(lock); // Release lock and wait for notification
     }
 
-    if (_stop){
+    // if stop if active we will break from the while loop
+    if(_stop){
+        // if the stop command is active we return out
         return nullptr;
     }
-        
+
 
     function<void()> task = _TaskQueue.front();
     _TaskQueue.pop();
@@ -51,7 +53,7 @@ void ThreadPool::Worker() {
 
         function<void()> worker_task = TaskQueuePop();
 
-        if (_stop && !worker_task) {  // If the pool is stopping and no task
+        if (_stop || !worker_task) {  // If the pool is stopping and no task
             return;  // Exit worker thread
         }
 
